@@ -16,7 +16,7 @@ int main () {
 
   inserir(alunos, 10);
   inserir(alunos, 32);
-  
+  inserirFront(alinos, 4);
   imprimirFila(alunos);
 
   destroiFila(alunos);
