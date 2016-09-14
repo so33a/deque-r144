@@ -11,82 +11,78 @@ link novoNo(int item, link next, link prev) {
   }
   t->item = item;
   t->next = next;
-  t->prev = prev;
-  
   return t;
 }
 
 FILA novaFila() {
   FILA f = malloc(sizeof *f);
-  f->last = f->first = NULL;
+  f->ultimo = f->primeiro = NULL;
   return f;
 }
-
-void inserir(FILA f, int e) {
-  if(f->first == NULL) {
-    f->first = f->last = novoNo(e, NULL, NULL);
+void insereDepois(FILA f, int e) {
+  if(f->primeiro == NULL) {
+    f->primeiro = f->ultimo = novoNo(e, NULL, NULL);
   } else {
-    f->last->next = novoNo(e, NULL, f->last);
-    f->last = f->last->next;
+    f->ultimo->next = novoNo(e, NULL, f->ultimo);
+    f->ultimo = f->ultimo->next;
+  }
+}
+void insereAntes(FILA f, int e) {
+  if(f->ultimo == NULL) {
+    f->ultimo = f->primeiro = novoNo(e, NULL, NULL);
+  } else {
+    f->primeiro->prev = novoNo(e, NULL, f->primeiro);
+    f->primeiro = f->primeiro->prev;
   }
 }
 
-int remover(FILA f){
+int removeDepois(FILA f){
   int x;
   link t;
   if(filaVazia(f)){
     printf ("Erro, a fila esta vazia\n");
     return 0;
   }
-  
-  x = f->first->item;
-  t = f->first;
-  f->first = f->first->next;
-  if(f->first == NULL)
-    f->last = NULL;
+
+  x = f->ultimo->item;
+  t = f->ultimo;
+  f->ultimo = f->ultimo->prev;
+
+  if(f->ultimo == NULL)
+    f->primeiro = NULL;
+
+  free(t);
+  return x;
+}
+int removeAntes(FILA f){
+  int x;
+  link t;
+  if(filaVazia(f)){
+    printf ("Erro, a fila esta vazia\n");
+    return 0;
+  }
+
+  x = f->primeiro->item;
+  t = f->primeiro;
+  f->primeiro = f->primeiro->next;
+
+  if(f->primeiro == NULL)
+    f->ultimo = NULL;
 
   free(t);
   return x;
 }
 int filaVazia(FILA f) {
-  return ((f->last == NULL) || (f->first == NULL));
+  return ((f->ultimo == NULL) || (f->primeiro == NULL));
 }
 void imprimirFila(FILA f) {
   link t;
-  for(t = f->first; t != NULL; t = t->next) 
+  for(t = f->primeiro; t != NULL; t = t->next)
     printf ("%d ", t->item);
   printf ("\n");
 }
 void destroiFila(FILA f) {
   while (!filaVazia(f))
-    remover(f);
+    removeAntes(f);
   free(f);
 }
-int removerBack(FILA f)
-{
-  int x;
-  link t;
-  if(filaVazia(f)){
-    printf ("Erro, a fila esta vazia\n");
-    return 0;
-  }
-  x = f->last->item;
-  t = f->last;
-  f->last = f->last->prev;
-  
-  if(f->last == NULL){
-    f->last = NULL;
-  }
-  free(t);
-  
-}
-void InsereFront(FILA f, e)
-{
-  if(f->last == NULL) {
-    f->last = f->first = novoNo(e, NULL, NULL);
-  } else {
-    f->first->prev = novoNo(e, NULL, f->first);
-    f->first = f->first->prev;
-  }
-}
-
