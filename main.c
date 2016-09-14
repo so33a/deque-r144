@@ -1,22 +1,28 @@
 #include <stdio.h>
 #include "fila.h"
+#include "fila.c"
 
 int main () {
   FILA alunos = novaFila();
-  inserir(alunos, 9);
-  inserir(alunos, 8);
-  inserir(alunos, 3);
-  inserir(alunos, 10);
+  insereDepois(alunos, 9);
+  insereDepois(alunos, 8);
+  insereDepois(alunos, 3);
+  insereDepois(alunos, 10);
 
   imprimirFila(alunos);
 
   while(!filaVazia(alunos))
-    printf ("removido: %d \n", remover(alunos));
+    printf ("removido: %d \n", removeAntes(alunos));
 
+  printf ("---------------------\n\n");
+  insereAntes(alunos, 10);
+  insereAntes(alunos, 32);
 
-  inserir(alunos, 10);
-  inserir(alunos, 32);
-  inserirFront(alinos, 4);
+  imprimirFila(alunos);
+
+   while(!filaVazia(alunos))
+    printf ("removido: %d \n", removeDepois(alunos));
+
   imprimirFila(alunos);
 
   destroiFila(alunos);
